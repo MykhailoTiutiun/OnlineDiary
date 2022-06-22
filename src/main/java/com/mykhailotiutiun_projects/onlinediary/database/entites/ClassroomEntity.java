@@ -1,8 +1,11 @@
 package com.mykhailotiutiun_projects.onlinediary.database.entites;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
 @Entity
+@Data
 @Table(name = "classroom")
 public class ClassroomEntity {
 
@@ -19,30 +22,6 @@ public class ClassroomEntity {
     public ClassroomEntity(long id, String name, String classroomTeacher) {
         this.id = id;
         this.name = name;
-        this.classroomTeacher = classroomTeacher;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getClassroomTeacher() {
-        return classroomTeacher;
-    }
-
-    public void setClassroomTeacher(String classroomTeacher) {
         this.classroomTeacher = classroomTeacher;
     }
 }
