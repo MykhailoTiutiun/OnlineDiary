@@ -1,20 +1,31 @@
 package com.mykhailotiutiun_projects.onlinediary.database.managers;
 
 
-import com.mykhailotiutiun_projects.onlinediary.database.entites.EmployeeEntity;
 import com.mykhailotiutiun_projects.onlinediary.database.entites.GradeEntity;
-import com.mykhailotiutiun_projects.onlinediary.database.repositories.EmployeeRepository;
-import com.mykhailotiutiun_projects.onlinediary.database.repositories.GradeRepository;
+import com.mykhailotiutiun_projects.onlinediary.database.entites.LessonTypeEntity;
+import com.mykhailotiutiun_projects.onlinediary.database.repositories.EmployeesRepository;
+import com.mykhailotiutiun_projects.onlinediary.database.repositories.GradesRepository;
 
-public class GradeManager {
+import java.util.List;
 
-    private GradeRepository repository;
-    private EmployeeManager employeeManager;
+public class GradesManager {
 
-    public GradeManager(GradeRepository repository, EmployeeManager employeeManager) {
+    private GradesRepository repository;
+    private EmployeesManager employeeManager;
+
+    public GradesManager(GradesRepository repository, EmployeesRepository employeesRepository) {
         this.repository = repository;
-        this.employeeManager = employeeManager;
+        this.employeeManager = new EmployeesManager(employeesRepository, repository);
     }
+
+
+    public GradeEntity getGradeByName(String name) {
+        return repository.findByName(name);
+    }
+    public List<GradeEntity> getAllGrades(){
+        return repository.findAll();
+    }
+
 
     public void createNewGrade(String employeeName, String employeePassword, String gradeName, String gradeTeacherName) {
         if (employeeManager.verifyEmployee(employeeName, employeePassword, 2)) {
@@ -40,10 +51,4 @@ public class GradeManager {
         }
     }
 
-    public GradeEntity getGradeByName(String name) {
-        return repository.findByName(name);
-    }
-    public Iterable<GradeEntity> getAllGrades(){
-        return repository.findAll();
-    }
 }

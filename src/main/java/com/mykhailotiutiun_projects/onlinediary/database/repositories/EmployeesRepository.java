@@ -5,10 +5,12 @@ import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
-public interface EmployeeRepository extends CrudRepository<EmployeeEntity, Long> {
+public interface EmployeesRepository extends CrudRepository<EmployeeEntity, Long> {
 
     EmployeeEntity findById(long id);
     EmployeeEntity findByName(String name);
+    List<EmployeeEntity> findAll();
+    List<EmployeeEntity> findAllByPermissionsLevel(int permissionLevel);
     List<EmployeeEntity> findAllBySpecialization(String specialization);
 
 }

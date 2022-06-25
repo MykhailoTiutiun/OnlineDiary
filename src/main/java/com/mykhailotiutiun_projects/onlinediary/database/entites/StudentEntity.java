@@ -10,19 +10,27 @@ import javax.persistence.*;
 public class StudentEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     @Column
     private String name;
     @Column
     private String password;
     @Column
-    private String grades;
+    private String grade;
     @Column
-    private String semesterGrades;
-    @Column
-    private String yearlyGrades;
+    private String lessons;
+    @Column(length = 2000)
+    private String marks;
+    @Column(length = 1000)
+    private String semesterMarks;
+    @Column(length = 500)
+    private String yearlyMarks;
 
     protected StudentEntity() {
+    }
+
+    public StudentEntity(String name) {
+        this.name = name;
     }
 }
