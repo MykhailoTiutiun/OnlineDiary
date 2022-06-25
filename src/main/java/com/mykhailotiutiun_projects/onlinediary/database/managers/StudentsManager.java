@@ -33,6 +33,15 @@ public class StudentsManager {
         return repository.findByGrade(gradeName);
     }
 
+    public Map<String, List<String>> getMarksByStName(String name, int typeOfMarks) {
+        switch (typeOfMarks){
+            case (0) -> {return getMapFromString(getStudentByName(name).getMarks());}
+            case (1) -> {return getMapFromString(getStudentByName(name).getSemesterMarks());}
+            case (2) -> {return getMapFromString(getStudentByName(name).getYearlyMarks());}
+            default -> {return null;}
+        }
+    }
+
     public boolean verifyStudent(String name, String password){
         StudentEntity studentEntity = getStudentByName(name);
         if (studentEntity != null){

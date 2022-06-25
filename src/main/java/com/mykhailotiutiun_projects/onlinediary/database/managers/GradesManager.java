@@ -22,6 +22,7 @@ public class GradesManager {
     public GradeEntity getGradeByName(String name) {
         return repository.findByName(name);
     }
+
     public List<GradeEntity> getAllGrades(){
         return repository.findAll();
     }
