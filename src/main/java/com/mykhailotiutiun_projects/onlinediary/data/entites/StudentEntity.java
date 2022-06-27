@@ -1,4 +1,4 @@
-package com.mykhailotiutiun_projects.onlinediary.database.entites;
+package com.mykhailotiutiun_projects.onlinediary.data.entites;
 
 import lombok.Data;
 
@@ -14,8 +14,6 @@ public class StudentEntity {
     private long id;
     @Column
     private String name;
-    @Column
-    private String password;
     @Column
     private String grade;
     @Column

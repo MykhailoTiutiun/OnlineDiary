@@ -1,6 +1,6 @@
-package com.mykhailotiutiun_projects.onlinediary.database.repositories;
+package com.mykhailotiutiun_projects.onlinediary.data.repositories;
 
-import com.mykhailotiutiun_projects.onlinediary.database.entites.GradeEntity;
+import com.mykhailotiutiun_projects.onlinediary.data.entites.GradeEntity;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

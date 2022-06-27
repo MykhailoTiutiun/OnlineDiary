@@ -1,22 +1,26 @@
-package com.mykhailotiutiun_projects.onlinediary.database.managers;
+package com.mykhailotiutiun_projects.onlinediary.data.managers;
 
 
-import com.mykhailotiutiun_projects.onlinediary.database.entites.GradeEntity;
-import com.mykhailotiutiun_projects.onlinediary.database.entites.LessonTypeEntity;
-import com.mykhailotiutiun_projects.onlinediary.database.repositories.EmployeesRepository;
-import com.mykhailotiutiun_projects.onlinediary.database.repositories.GradesRepository;
+import com.mykhailotiutiun_projects.onlinediary.data.entites.GradeEntity;
+import com.mykhailotiutiun_projects.onlinediary.data.entites.RoleEntity;
+import com.mykhailotiutiun_projects.onlinediary.data.repositories.GradesRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class GradesManager {
 
+    @Autowired
     private GradesRepository repository;
+    @Autowired
     private EmployeesManager employeeManager;
 
-    public GradesManager(GradesRepository repository, EmployeesRepository employeesRepository) {
-        this.repository = repository;
-        this.employeeManager = new EmployeesManager(employeesRepository, repository);
-    }
+    @Autowired
+    private UsersManager usersManager;
+
+
 
 
     public GradeEntity getGradeByName(String name) {
@@ -29,7 +33,7 @@ public class GradesManager {
 
 
     public void createNewGrade(String employeeName, String employeePassword, String gradeName, String gradeTeacherName) {
-        if (employeeManager.verifyEmployee(employeeName, employeePassword, 2)) {
+        if (usersManager.verifyUser(employeeName, employeePassword, new RoleEntity(4L, "ROLE_ADMIN"))) {
             if (employeeManager.getEmployeeByName(gradeTeacherName) != null && getGradeByName(gradeName) == null){
                 repository.save(new GradeEntity(gradeName, gradeTeacherName));
             }
@@ -38,7 +42,7 @@ public class GradesManager {
     }
 
     public void changeGradeTeacher(String adminName, String adminPassword, String gradeName, String newGradeTeacherName){
-        if(employeeManager.verifyEmployee(adminName, adminPassword, 2) && getGradeByName(gradeName) != null) {
+        if(usersManager.verifyUser(adminName, adminPassword, new RoleEntity(4L, "ROLE_ADMIN")) && getGradeByName(gradeName) != null) {
             GradeEntity gradeEntity = getGradeByName(gradeName);
             repository.delete(gradeEntity);
             gradeEntity.setGradeTeacherName(newGradeTeacherName);
@@ -47,7 +51,7 @@ public class GradesManager {
     }
 
     public void deleteGrade(String adminName, String adminPassword, String gradeName){
-        if(employeeManager.verifyEmployee(adminName, adminPassword, 2) && getGradeByName(gradeName) != null) {
+        if(usersManager.verifyUser(adminName, adminPassword, new RoleEntity(4L, "ROLE_ADMIN")) && getGradeByName(gradeName) != null) {
             repository.delete(getGradeByName(gradeName));
         }
     }

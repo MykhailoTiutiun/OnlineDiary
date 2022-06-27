@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sing up</title>
+</head>
+<body>
+<div>
+  <form th:action="@{/registration}" method="post"
+        th:object="${userForm}">
+    <h2>Sing up</h2>
+    <div>
+      <input type="text" th:field="*{name}" placeholder="Username"
+                  autofocus="true"></input>
+    </div>
+    <div>
+      <input type="password" th:field="*{password}" placeholder="Password"></input>
+    </div>
+    <div>
+      <input type="password" th:field="*{passwordConfirm}"
+                  placeholder="Confirm your password"></input>
+    </div>
+    <div>
+      <input type="checkbox" th:field="*{employee}" id="employee">
+      <label for="employee">Employee account</label>
+    </div>
+    <button type="submit">Log up</button>
+  </form>
+  <h4>Already have an account <a href="/login">Sing in</a></h4>
+  <a href="/static">Main page</a>
+</div>
+</body>
+</html>

@@ -1,4 +1,4 @@
-package com.mykhailotiutiun_projects.onlinediary.database.entites;
+package com.mykhailotiutiun_projects.onlinediary.data.entites;
 
 import lombok.Data;
 

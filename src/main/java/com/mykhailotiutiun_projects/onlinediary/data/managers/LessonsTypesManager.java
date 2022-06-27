@@ -1,27 +1,28 @@
-package com.mykhailotiutiun_projects.onlinediary.database.managers;
+package com.mykhailotiutiun_projects.onlinediary.data.managers;
 
-import com.mykhailotiutiun_projects.onlinediary.database.entites.LessonTypeEntity;
-import com.mykhailotiutiun_projects.onlinediary.database.repositories.EmployeesRepository;
-import com.mykhailotiutiun_projects.onlinediary.database.repositories.GradesRepository;
-import com.mykhailotiutiun_projects.onlinediary.database.repositories.LessonsTypesRepository;
-import com.mykhailotiutiun_projects.onlinediary.database.repositories.StudentsRepository;
+import com.mykhailotiutiun_projects.onlinediary.data.entites.LessonTypeEntity;
+import com.mykhailotiutiun_projects.onlinediary.data.entites.RoleEntity;
+import com.mykhailotiutiun_projects.onlinediary.data.repositories.LessonsTypesRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Stream;
 
+@Service
 public class LessonsTypesManager {
 
+    @Autowired
     private LessonsTypesRepository repository;
+    @Autowired
     private EmployeesManager employeeManager;
+    @Autowired
+    private UsersManager usersManager;
+    @Autowired
     private GradesManager gradesManager;
+    @Autowired
     private StudentsManager studentsManager;
 
-    public LessonsTypesManager(LessonsTypesRepository repository, EmployeesRepository employeesRepository, GradesRepository gradesRepository, StudentsRepository studentsRepository) {
-        this.repository = repository;
-        this.employeeManager = new EmployeesManager(employeesRepository, gradesRepository);
-        this.gradesManager = new GradesManager(gradesRepository, employeesRepository);
-        this.studentsManager = new StudentsManager(studentsRepository, employeesRepository, gradesRepository);
-    }
 
     public LessonTypeEntity getLessonTypeByName(String name) {
         return repository.findByName(name);
@@ -44,19 +45,19 @@ public class LessonsTypesManager {
 
 
     public void createNewLessonType(String employeeName, String employeePassword, String lessonTypeName) {
-        if (employeeManager.verifyEmployee(employeeName, employeePassword, 3) && getLessonTypeByName(lessonTypeName) == null) {
+        if (usersManager.verifyUser(employeeName, employeePassword, new RoleEntity(5L, "ROLE_MAIN_ADMIN")) && getLessonTypeByName(lessonTypeName) == null) {
             repository.save(new LessonTypeEntity(lessonTypeName));
         }
     }
 
     public void deleteLessonType(String employeeName, String employeePassword, String lessonTypeName) {
-        if (employeeManager.verifyEmployee(employeeName, employeePassword, 3) && getLessonTypeByName(lessonTypeName) != null) {
+        if (usersManager.verifyUser(employeeName, employeePassword, new RoleEntity(5L, "ROLE_MAIN_ADMIN")) && getLessonTypeByName(lessonTypeName) != null) {
             repository.delete(getLessonTypeByName(lessonTypeName));
         }
     }
 
     public void addLessonTypeGrade(String adminName, String adminPassword, String name, String grade) {
-        if (employeeManager.verifyEmployee(adminName, adminPassword, 2) && gradesManager.getGradeByName(grade) != null) {
+        if (usersManager.verifyUser(adminName, adminPassword, new RoleEntity(4L, "ROLE_ADMIN")) && gradesManager.getGradeByName(grade) != null) {
             LessonTypeEntity lessonTypeEntity = getLessonTypeByName(name);
             String grades = lessonTypeEntity.getGrades();
 
@@ -73,7 +74,7 @@ public class LessonsTypesManager {
     }
 
     public void dropLessonTypeGrade(String adminName, String adminPassword, String name, String grade) {
-        if (employeeManager.verifyEmployee(adminName, adminPassword, 2) && employeeManager.getEmployeeByName(name).getGrades() != null && gradesManager.getGradeByName(grade) != null) {
+        if (usersManager.verifyUser(adminName, adminPassword, new RoleEntity(4L, "ROLE_ADMIN")) && employeeManager.getEmployeeByName(name).getGrades() != null && gradesManager.getGradeByName(grade) != null) {
             LessonTypeEntity lessonTypeEntity = getLessonTypeByName(name);
             List<String> grades = List.of(lessonTypeEntity.getGrades().split(";"));
             grades.remove(grade);

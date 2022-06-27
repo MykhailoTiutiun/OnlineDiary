@@ -1,27 +1,24 @@
-package com.mykhailotiutiun_projects.onlinediary.database.managers;
+package com.mykhailotiutiun_projects.onlinediary.data.managers;
 
-import com.mykhailotiutiun_projects.onlinediary.database.entites.LessonTypeEntity;
-import com.mykhailotiutiun_projects.onlinediary.database.entites.StudentEntity;
-import com.mykhailotiutiun_projects.onlinediary.database.repositories.EmployeesRepository;
-import com.mykhailotiutiun_projects.onlinediary.database.repositories.GradesRepository;
-import com.mykhailotiutiun_projects.onlinediary.database.repositories.StudentsRepository;
+import com.mykhailotiutiun_projects.onlinediary.data.entites.LessonTypeEntity;
+import com.mykhailotiutiun_projects.onlinediary.data.entites.RoleEntity;
+import com.mykhailotiutiun_projects.onlinediary.data.entites.StudentEntity;
+import com.mykhailotiutiun_projects.onlinediary.data.repositories.StudentsRepository;
 import org.jetbrains.annotations.NotNull;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.parser.Entity;
 import java.util.*;
 
+@Service
 public class StudentsManager {
 
+    @Autowired
     private StudentsRepository repository;
-    private EmployeesManager employeesManager;
+    @Autowired
     private GradesManager gradesManager;
-
-    public StudentsManager(StudentsRepository repository, EmployeesRepository employeesRepository, GradesRepository gradesRepository) {
-        this.repository = repository;
-        this.employeesManager = new EmployeesManager(employeesRepository, gradesRepository);
-        this.gradesManager = new GradesManager(gradesRepository, employeesRepository);
-    }
+    @Autowired
+    private UsersManager usersManager;
 
     public StudentEntity getStudentByName(String name){
         return repository.findByName(name);
@@ -41,15 +38,6 @@ public class StudentsManager {
             default -> {return null;}
         }
     }
-
-    public boolean verifyStudent(String name, String password){
-        StudentEntity studentEntity = getStudentByName(name);
-        if (studentEntity != null){
-            return studentEntity.getPassword().equals(password);
-        }
-        return false;
-    }
-
     private Map<String, List<String>> getMapFromString(String mapString){
         Map<String, List<String>> map = new HashMap<>();
         Arrays.stream(mapString.split(";")).map(s -> s.split("=")).forEach(keyValueString -> {
@@ -72,23 +60,14 @@ public class StudentsManager {
         return String.valueOf(mapString);
     }
 
-    public void addNewStudent(String adminName, String adminPassword, String name){
-        if(employeesManager.verifyEmployee(adminName, adminPassword, 2) && getStudentByName(name) == null){
+    public void addNewStudent(String name) {
+        if (getStudentByName(name) == null) {
             repository.save(new StudentEntity(name));
         }
     }
 
-    public void setPassword(String name, String lastPassword, String newPassword){
-        if (verifyStudent(name, lastPassword)){
-            StudentEntity studentEntity = getStudentByName(name);
-            repository.delete(studentEntity);
-            studentEntity.setPassword(newPassword);
-            repository.save(studentEntity);
-        }
-    }
-
     public void setGrade(String adminName, String adminPassword, String name, String grade) {
-        if (employeesManager.verifyEmployee(adminName, adminPassword, 2) && getStudentByName(name) != null && gradesManager.getGradeByName(grade) != null) {
+        if (usersManager.verifyUser(adminName, adminPassword, new RoleEntity(4L, "ROLE_ADMIN")) && getStudentByName(name) != null && gradesManager.getGradeByName(grade) != null) {
             StudentEntity studentEntity = getStudentByName(name);
             repository.delete(studentEntity);
             studentEntity.setGrade(grade);
@@ -120,7 +99,6 @@ public class StudentsManager {
 
         repository.delete(studentEntity);
 
-        // typeOfMarks: 0 = usual marks, 1 = semester marks, 2 = yearly marks
 
         switch (typeOfMarks) {
             case (0) -> {
@@ -144,8 +122,8 @@ public class StudentsManager {
         repository.save(studentEntity);
     }
 
-    public void deleteStudent(String adminName, String adminPassword, String name){
-        if(employeesManager.verifyEmployee(adminName, adminPassword, 2) && getStudentByName(name) != null){
+    public void deleteStudent(String name){
+        if(getStudentByName(name) != null){
             repository.delete(getStudentByName(name));
         }
     }
