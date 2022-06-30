@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Online Diary | Lessons Manager</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}"/>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    <script>
+
+        function setLessonId(id){
+            var elements = document.getElementsByClassName("lessonIdInput");
+            for(var i = 0; i < elements.length; i++) {
+                elements[i].value = id;
+            }
+        }
+
+        function show (a) {
+            if(a===0) {
+                document.getElementById("createLessonForm").style.display = "none";
+                document.getElementById("createLessonButton").style.display = "block";
+                document.getElementById("addGradeTable").style.display = "none";
+                document.getElementById("addGradeCancelButton").style.display = "none";
+            } else if(a===1) {
+                document.getElementById("createLessonForm").style.display = "block";
+                document.getElementById("createLessonButton").style.display = "none";
+                document.getElementById("addGradeTable").style.display = "none";
+                document.getElementById("addGradeCancelButton").style.display = "none";
+            } else {
+                document.getElementById("createLessonForm").style.display = "none";
+                document.getElementById("createLessonButton").style.display = "none";
+                document.getElementById("addGradeTable").style.display = "table";
+                document.getElementById("addGradeCancelButton").style.display = "block";
+
+            }
+        }
+
+    </script>
+</head>
+<body>
+
+<h2>Lessons Manager</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Grades</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="lesson : ${lessons}">
+        <th th:text="${lesson.name}"></th>
+        <th>
+            <span class="removeGradeButtons" th:each="grade : ${lesson.grades}">
+                <span th:text="${grade}"></span>
+                <span>&nbsp;</span>
+                <form action="/lessons_manager" method="post">
+                    <input type="hidden" name="lessonId" th:value="${lesson.id}">
+                    <input type="hidden" name="gradeName" th:value="${grade}">
+                    <input type="hidden" name="action" value="removeGrade">
+                    <button type="submit">Remove Grade</button>
+                </form>
+            </span>
+        </th>
+
+        <th>
+
+            <button type="button" th:attr="onclick=|setLessonId(${lesson.id}); show(2);|">Add Grade</button>
+
+            <form action="/lessons_manager" method="post">
+                <input type="hidden" name="lessonId" th:value="${lesson.id}">
+                <input type="hidden" name="action" value="delete">
+                <button type="submit">Delete</button>
+            </form>
+        </th>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<button id="createLessonButton" onclick="show(1);">Create Lesson</button>
+
+<form id="createLessonForm" style="display: none" th:action="@{/lessons_manager/create}" method="post" th:object="${lessonForm}">
+    <h3>Create Lesson</h3>
+    <div>
+        <input type="text" th:field="*{name}" placeholder="Name" autofocus="true">
+    </div>
+    <br>
+    <button type="submit">Create</button>
+    <button type="button" onclick="show(0);">Cancel</button>
+</form>
+
+<table id="addGradeTable" style="display: none">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Grade Teacher Name</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="grade : ${grades}">
+        <th><span th:text="${grade.name}"></span></th>
+        <th><span th:text="${grade.gradeTeacherName}"></span></th>
+        <th>
+            <form action="/lessons_manager" method="post">
+                <input type="hidden" class="lessonIdInput" name="lessonId" value="">
+                <input type="hidden" name="gradeName" th:value="${grade.name}">
+                <input type="hidden" name="action" value="addGrade">
+                <button type="submit">Add Grade</button>
+            </form>
+        </th>
+    </tr>
+    </tbody>
+</table>
+
+<button type="button" style="display: none;" id="addGradeCancelButton" onclick="show(0);">Cancel</button>
+
+
+</body>
+</html>

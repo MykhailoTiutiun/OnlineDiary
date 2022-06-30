@@ -3,7 +3,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Главная</title>
+    <title>Online Diary</title>
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}" />
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
 
 </head>
 <body>
@@ -16,8 +18,16 @@
     <h3><a href="/registration">Sing up</a></h3>
 </div>
 
-<div sec:authorize="hasRole('ROLE_ADMIN')">
+<div sec:authorize="hasRole('ROLE_EMPLOYEE')">
     <h3><a href="/users_manager">Users Manager</a></h3>
+</div>
+
+<div sec:authorize="hasRole('ROLE_HEAD_TEACHER')">
+    <h3><a href="/grades_manager">Grades Manager</a></h3>
+</div>
+
+<div sec:authorize="hasRole('ROLE_HEAD_TEACHER')">
+    <h3><a href="/lessons_manager">Lessons Manager</a></h3>
 </div>
 
 <div sec:authorize="isAuthenticated()">

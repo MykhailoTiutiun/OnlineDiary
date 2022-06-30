@@ -1,8 +1,11 @@
 package com.mykhailotiutiun_projects.onlinediary.data.entites;
 
 import lombok.Data;
+import org.hibernate.annotations.LazyCollection;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -14,12 +17,17 @@ public class LessonTypeEntity {
     long id;
     @Column
     String name;
-    @Column
-    String grades;
+    @CollectionTable
+    @ElementCollection
+    Set<String> grades = new HashSet<>();
 
-    protected LessonTypeEntity(){}
+    public LessonTypeEntity(){}
 
     public LessonTypeEntity(String name) {
         this.name = name;
+    }
+
+    public boolean isGradesContain(String grade){
+        return grades.contains(grade);
     }
 }

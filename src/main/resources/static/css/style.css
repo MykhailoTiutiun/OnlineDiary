@@ -1,0 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400&display=swap');
+
+table {
+    border-collapse: collapse;
+}
+body{
+    font-family: "Roboto", sans-serif;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+.actionsForms {
+    display: revert;
+}
+
+.removeGradeButtons {
+    display: inline-block;
+}
+
+form {
+    display: grid;
+}
+
+button {
+    padding: 4px 8px;
+}

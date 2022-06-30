@@ -1,10 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head>
     <meta charset="UTF-8">
-    <title>UsersManager</title>
+    <title>Online Diary | Users Manager | Students</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}"/>
 </head>
 <body>
+<h2>Students</h2>
 
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Grade</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="student : ${students}">
+        <td><span th:text="${student.name}"></span></td>
+        <td><span th:text="${student.grade}"></span></td>
+        <td></td>
+    </tr>
+    </tbody>
+</table>
 </body>
 </html>

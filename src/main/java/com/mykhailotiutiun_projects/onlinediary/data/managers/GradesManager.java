@@ -14,11 +14,6 @@ public class GradesManager {
 
     @Autowired
     private GradesRepository repository;
-    @Autowired
-    private EmployeesManager employeeManager;
-
-    @Autowired
-    private UsersManager usersManager;
 
 
 
@@ -32,27 +27,24 @@ public class GradesManager {
     }
 
 
-    public void createNewGrade(String employeeName, String employeePassword, String gradeName, String gradeTeacherName) {
-        if (usersManager.verifyUser(employeeName, employeePassword, new RoleEntity(4L, "ROLE_ADMIN"))) {
-            if (employeeManager.getEmployeeByName(gradeTeacherName) != null && getGradeByName(gradeName) == null){
-                repository.save(new GradeEntity(gradeName, gradeTeacherName));
+    public void createNewGrade(GradeEntity gradeEntity) {
+            if (getGradeByName(gradeEntity.getName()) == null){
+                repository.save(gradeEntity);
             }
         }
 
-    }
-
-    public void changeGradeTeacher(String adminName, String adminPassword, String gradeName, String newGradeTeacherName){
-        if(usersManager.verifyUser(adminName, adminPassword, new RoleEntity(4L, "ROLE_ADMIN")) && getGradeByName(gradeName) != null) {
-            GradeEntity gradeEntity = getGradeByName(gradeName);
+    public void changeGradeTeacher(long id, String teacherId){
+        if(repository.findById(id) != null) {
+            GradeEntity gradeEntity = repository.findById(id);
             repository.delete(gradeEntity);
-            gradeEntity.setGradeTeacherName(newGradeTeacherName);
+            gradeEntity.setGradeTeacherName(teacherId);
             repository.save(gradeEntity);
         }
     }
 
-    public void deleteGrade(String adminName, String adminPassword, String gradeName){
-        if(usersManager.verifyUser(adminName, adminPassword, new RoleEntity(4L, "ROLE_ADMIN")) && getGradeByName(gradeName) != null) {
-            repository.delete(getGradeByName(gradeName));
+    public void deleteGrade(long id){
+        if(repository.findById(id) != null) {
+            repository.delete(repository.findById(id));
         }
     }
 

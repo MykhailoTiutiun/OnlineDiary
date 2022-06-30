@@ -17,10 +17,9 @@ public class GradeEntity {
     @Column
     private String gradeTeacherName;
 
-    protected GradeEntity() {}
+    public GradeEntity() {}
 
-    public GradeEntity(String name, String gradesTeacherName) {
+    public GradeEntity(String name) {
         this.name = name;
-        this.gradeTeacherName = gradesTeacherName;
     }
 }

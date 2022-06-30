@@ -10,8 +10,5 @@ public interface StudentsRepository extends CrudRepository<StudentEntity, Long> 
     StudentEntity findById(long id);
     StudentEntity findByName(String name);
     List<StudentEntity> findAll();
-    List<StudentEntity> findByGrade(String grade);
-
-    void deleteAllByGrade(String grade);
 
 }

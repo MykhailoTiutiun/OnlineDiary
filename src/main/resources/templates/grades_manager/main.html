@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Online Diary | Grades Manager</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}"/>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    <script>
+
+        function setGradeId(id){
+            var elements = document.getElementsByClassName("gradeIdInput");
+            for(var i = 0; i < elements.length; i++) {
+                elements[i].value = id;
+            }
+        }
+
+
+        function show (a) {
+            if(a===0) {
+                document.getElementById("createGradeForm").style.display = "none";
+                document.getElementById("createGradeButton").style.display = "block";
+                document.getElementById("setMainTeacherTable").style.display = "none";
+                document.getElementById("setMainTeacherCancelButton").style.display = "none";
+            } else if(a===1) {
+                document.getElementById("createGradeForm").style.display = "block";
+                document.getElementById("createGradeButton").style.display = "none";
+                document.getElementById("setMainTeacherTable").style.display = "none";
+                document.getElementById("setMainTeacherCancelButton").style.display = "none";
+            } else {
+                document.getElementById("createGradeForm").style.display = "none";
+                document.getElementById("createGradeButton").style.display = "none";
+                document.getElementById("setMainTeacherTable").style.display = "table";
+                document.getElementById("setMainTeacherCancelButton").style.display = "block";
+            }
+        }
+
+    </script>
+
+</head>
+<body>
+
+<h2>Grades Manager</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Grade Teacher Name</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="grade : ${grades}">
+        <td><span th:text="${grade.name}"></span></td>
+        <td><span th:text="${grade.gradeTeacherName}"></span></td>
+        <td>
+            <button type="button" th:attr="onclick=|setGradeId(${grade.id}); show(2);|">Set Main Teacher</button>
+
+            <form action="/grades_manager" method="post">
+                <input type="hidden" name="gradeId" th:value="${grade.id}">
+                <input type="hidden" name="action" value="delete">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+<button id="createGradeButton" onclick="show(1);">Create Grade</button>
+
+<form id="createGradeForm" style="display: none" th:action="@{/grades_manager/create_grade}" method="post" th:object="${gradeForm}">
+    <h3>Create Grade</h3>
+    <div>
+        <input type="text" th:field="*{name}" placeholder="Name" autofocus="true">
+    </div>
+    <br>
+    <button type="submit">Create</button>
+    <button type="button" onclick="show(0);">Cancel</button>
+</form>
+
+<table id="setMainTeacherTable" style="display: none">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Specialization</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="employee : ${employees}">
+        <th><span th:text="${employee.name}"></span></th>
+        <th><span th:text="${employee.specialization}"></span></th>
+        <th>
+            <form action="/grades_manager" method="post">
+                <input type="hidden" class="gradeIdInput" name="gradeId" value="">
+                <input type="hidden" name="employeeName" th:value="${employee.name}">
+                <input type="hidden" name="action" value="setMainTeacher">
+                <button type="submit">Set Main Teacher</button>
+            </form>
+        </th>
+    </tr>
+    </tbody>
+</table>
+
+<button type="button" style="display: none;" id="setMainTeacherCancelButton" onclick="show(0);">Cancel</button>
+</body>
+</html>

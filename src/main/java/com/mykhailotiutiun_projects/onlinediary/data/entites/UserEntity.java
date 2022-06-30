@@ -42,8 +42,16 @@ public class UserEntity implements UserDetails {
         this.Verify = false;
     }
 
+    public boolean hasRoleByIdAndName(long id, String roleName){
+        return roles.contains(new RoleEntity(id, roleName));
+    }
+
     public void addRole(RoleEntity role){
-        this.roles.add(role);
+        roles.add(role);
+    }
+
+    public void removeRole(RoleEntity role){
+        roles.remove(role);
     }
 
     @Override

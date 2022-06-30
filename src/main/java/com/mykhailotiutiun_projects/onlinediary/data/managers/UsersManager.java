@@ -65,7 +65,7 @@ public class UsersManager implements UserDetailsService {
     }
 
     public boolean changePassword(String name, String prevPassword, String newPassword){
-        if(verifyUser(name, prevPassword, new RoleEntity(0L, "ROLE_USER"))){
+        if(verifyUser(name, prevPassword, roleRepository.findByName("ROLE_USER"))){
             UserEntity user = userRepository.findByName(name);
             userRepository.delete(user);
             user.setPassword(newPassword);
@@ -99,9 +99,9 @@ public class UsersManager implements UserDetailsService {
             employeesRepository.save(new EmployeeEntity(user.getName()));
 
             if (bCryptPasswordEncoder.matches("12345", user.getPassword())) {
-                user.addRole(roleRepository.findByName("ROLE_MAIN_ADMIN"));
-                user.addRole(roleRepository.findByName("ROLE_ADMIN"));
                 user.addRole(roleRepository.findByName("ROLE_VERIFIED"));
+                user.addRole(roleRepository.findByName("ROLE_HEAD_TEACHER"));
+                user.addRole(roleRepository.findByName("ROLE_DIRECTOR"));
                 user.setVerify(true);
             }
         }
@@ -110,13 +110,28 @@ public class UsersManager implements UserDetailsService {
         return true;
     }
 
+    public void addRoleToUser(Long id, String roleName){
+        UserEntity user = getUserById(id);
+        userRepository.delete(user);
+        user.addRole(roleRepository.findByName(roleName));
+        userRepository.save(user);
+    }
+
+    public void removeRoleToUser(Long id, String roleName){
+        UserEntity user = getUserById(id);
+        userRepository.delete(user);
+        user.removeRole(roleRepository.findByName(roleName));
+        userRepository.save(user);
+    }
+
     public boolean deleteUser(Long userId) {
         if (userRepository.findById(userId).isPresent()) {
             String name = userRepository.findById(userId).get().getName();
             Set<RoleEntity> roles = userRepository.findByName(name).getRoles();
-            if(roles.contains(new RoleEntity(2L, "ROLE_STUDENT"))){
+            RoleEntity studentRole = roleRepository.findByName("ROLE_STUDENT");
+            if(roles.contains(studentRole)){
                 studentsRepository.delete(studentsRepository.findByName(name));
-            } else if(roles.contains(new RoleEntity(3L, "ROLE_EMPLOYEE"))){
+            } else {
                 employeesRepository.delete(employeesRepository.findByName(name));
             }
 
@@ -131,7 +146,8 @@ public class UsersManager implements UserDetailsService {
             UserEntity user = getUserById(userId);
             userRepository.delete(user);
             user.setVerify(true);
-            user.setRoles(Collections.singleton(new RoleEntity(1L, "ROLE_VERIFIED")));
+            user.addRole(roleRepository.findByName("ROLE_VERIFIED"));
+            userRepository.save(user);
             return true;
         }
         return false;

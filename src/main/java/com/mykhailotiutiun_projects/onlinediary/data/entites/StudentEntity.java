@@ -1,8 +1,10 @@
 package com.mykhailotiutiun_projects.onlinediary.data.entites;
 
+import com.mykhailotiutiun_projects.onlinediary.data.entites.converters.ListIntegerStringConverter;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.*;
 
 @Entity
 @Table(name = "students")
@@ -16,19 +18,41 @@ public class StudentEntity {
     private String name;
     @Column
     private String grade;
-    @Column
-    private String lessons;
-    @Column(length = 2000)
-    private String marks;
-    @Column(length = 1000)
-    private String semesterMarks;
-    @Column(length = 500)
-    private String yearlyMarks;
+    @CollectionTable
+    @ElementCollection
+    private Set<String> lessons = new HashSet<>();
+
+    @CollectionTable
+    @ElementCollection
+    @Convert(attributeName="value",converter= ListIntegerStringConverter.class)
+    private Map<String, List<Integer>> marks = new HashMap<>();
+
+    @CollectionTable
+    @ElementCollection
+    @Convert(attributeName="value",converter=ListIntegerStringConverter.class)
+    private Map<String, List<Integer>> semesterMarks = new HashMap<>();
+
+    @CollectionTable
+    @ElementCollection
+    @Convert(attributeName="value",converter=ListIntegerStringConverter.class)
+    private Map<String, List<Integer>> yearlyMarks = new HashMap<>();
 
     protected StudentEntity() {
     }
 
     public StudentEntity(String name) {
         this.name = name;
+    }
+
+    public void addLesson(String lesson){
+        lessons.add(lesson);
+    }
+
+    public void removeLesson(String lesson){
+        lessons.remove(lesson);
+    }
+
+    public boolean isLessonsContain(String lesson){
+        return lessons.contains(lesson);
     }
 }

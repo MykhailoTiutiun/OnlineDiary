@@ -43,7 +43,7 @@ public class EmployeesManager {
     }
 
     public void addEmployeeGrade(String adminName, String adminPassword, String name, String grade){
-        if(usersManager.verifyUser(adminName, adminPassword, new RoleEntity(4L, "ROLE_ADMIN"))){
+        if(usersManager.verifyUser(adminName, adminPassword, new RoleEntity(4L, "ROLE_HEAD_TEACHER"))){
             EmployeeEntity employeeEntity = getEmployeeByName(name);
             String grades = employeeEntity.getGrades();
 
@@ -58,7 +58,7 @@ public class EmployeesManager {
     }
 
     public void dropEmployeeGrade(String adminName, String adminPassword, String name, String grade){
-        if(usersManager.verifyUser(adminName, adminPassword, new RoleEntity(4L, "ROLE_ADMIN")) && getEmployeeByName(name).getGrades() != null){
+        if(usersManager.verifyUser(adminName, adminPassword, new RoleEntity(4L, "ROLE_HEAD_TEACHER")) && getEmployeeByName(name).getGrades() != null){
             EmployeeEntity employeeEntity = getEmployeeByName(name);
             List<String> grades = List.of(employeeEntity.getGrades().split(";"));
             grades.remove(grade);
