@@ -1,9 +1,8 @@
 package com.mykhailotiutiun_projects.onlinediary.web.controllers;
 
 import com.mykhailotiutiun_projects.onlinediary.data.entites.GradeEntity;
-import com.mykhailotiutiun_projects.onlinediary.data.managers.EmployeesManager;
-import com.mykhailotiutiun_projects.onlinediary.data.managers.GradesManager;
-import com.mykhailotiutiun_projects.onlinediary.data.repositories.EmployeesRepository;
+import com.mykhailotiutiun_projects.onlinediary.data.services.EmployeesService;
+import com.mykhailotiutiun_projects.onlinediary.data.services.GradesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,29 +15,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class GradesController {
 
     @Autowired
-    GradesManager gradesManager;
+    GradesService gradesService;
     @Autowired
-    EmployeesManager employeesManager;
+    EmployeesService employeesService;
 
     @GetMapping("/grades_manager")
     public String mainPage(Model model){
-        model.addAttribute("grades", gradesManager.getAllGrades());
+        model.addAttribute("grades", gradesService.getAllGrades());
         model.addAttribute("gradeForm", new GradeEntity());
-        model.addAttribute("employees", employeesManager.getAllEmployees());
+        model.addAttribute("employees", employeesService.getAllEmployees());
         return "grades_manager/main";
     }
 
     @PostMapping("/grades_manager/create_grade")
     public String createGrade(@ModelAttribute GradeEntity gradeEntity){
-        gradesManager.createNewGrade(gradeEntity);
+        gradesService.createNewGrade(gradeEntity);
         return "redirect:/grades_manager";
     }
 
     @PostMapping("/grades_manager")
     public String actions(@RequestParam(name = "action") String action, @RequestParam(name = "gradeId") long gradeId, @RequestParam(name = "employeeName", required = false) String employeeName, Model model){
         switch (action){
-            case ("delete") -> gradesManager.deleteGrade(gradeId);
-            case ("setMainTeacher") -> gradesManager.changeGradeTeacher(gradeId, employeeName);
+            case ("delete") -> gradesService.deleteGrade(gradeId);
+            case ("setMainTeacher") -> gradesService.changeGradeTeacher(gradeId, employeeName);
         }
 
         return "redirect:/grades_manager";

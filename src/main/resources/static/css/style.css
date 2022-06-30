@@ -12,7 +12,10 @@ table, th, td {
 }
 
 .actionsForms {
-    display: revert;
+    display: grid;
+    border-inline: none;
+    border-bottom: medium;
+    border-top: none;
 }
 
 .removeGradeButtons {
@@ -25,4 +28,5 @@ form {
 
 button {
     padding: 4px 8px;
+    cursor: pointer;
 }

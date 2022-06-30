@@ -3,6 +3,8 @@ package com.mykhailotiutiun_projects.onlinediary.data.entites;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -16,8 +18,10 @@ public class EmployeeEntity {
     private String name;
     @Column
     private String specialization;
-    @Column
-    private String grades;
+
+    @CollectionTable
+    @ElementCollection
+    private Set<String> grades = new HashSet<>();
 
     public EmployeeEntity() {
     }

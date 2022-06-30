@@ -1,10 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
 <head>
     <meta charset="UTF-8">
     <title>Online Diary | UsersManager | Employees</title>
+
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    <script>
+
+        function sendEmployeeIdToGradesTable(id){
+            var elements = document.getElementsByClassName("employeeIdInput");
+            for(var i = 0; i < elements.length; i++) {
+                elements[i].value = id;
+            }
+        }
+
+        function sendEmployeeIdToSetSpecializationForm(id){
+            document.getElementById("employeeIdSpecializationForm").value = id;
+        }
+
+
+        function show (a) {
+            if(a===0) {
+                document.getElementById("addGradeTable").style.display = "none";
+                document.getElementById("cancelButton").style.display = "none";
+                document.getElementById("specializationForm").style.display = "none";
+            } else if(a===1) {
+                document.getElementById("addGradeTable").style.display = "none";
+                document.getElementById("cancelButton").style.display = "none";
+                document.getElementById("specializationForm").style.display = "block";
+            } else {
+                document.getElementById("addGradeTable").style.display = "table";
+                document.getElementById("cancelButton").style.display = "block";
+                document.getElementById("specializationForm").style.display = "none";
+            }
+        }
+
+    </script>
 </head>
 <body>
+<h2>Employees</h2>
+
+<table>
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Specialization</th>
+        <th>Grades</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="employee : ${employees}">
+        <td><span th:text="${employee.name}"></span></td>
+        <td><span th:text="${employee.specialization}"></span></td>
+        <td><span class="removeGradeButtons" th:each="grade : ${employee.grades}">
+            <span th:text="${grade}"></span>
+            <span>&nbsp;</span>
+            <form action="/users_manager/employees" method="post">
+                <input type="hidden" name="employeeId" th:value="${employee.id}">
+                <input type="hidden" name="gradeName" th:value="${grade}">
+                <input type="hidden" name="action" value="removeGrade">
+                <button type="submit">Remove Grade</button>
+            </form>
+        </span>
+        </td>
+        <td class="actionsForms">
+            <button type="button" th:attr="onclick=|sendEmployeeIdToGradesTable(${employee.id}); show(2);|">Add Grade</button>
+            <button type="button" th:attr="onclick=|sendEmployeeIdToSetSpecializationForm(${employee.id}); show(1);|">Set Specialization</button>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<br>
+
+<form id="specializationForm" action="/users_manager/employees" method="post" style="display: none">
+    <h3>Set Specialization</h3>
+    <input type="hidden" id="employeeIdSpecializationForm" placeholder="Specialization" autofocus="true" name="employeeId" value="">
+    <input type="text" name="specialization">
+    <input type="hidden" name="action" value="setSpecialization">
+    <button type="submit">Confirm</button>
+    <button type="button" style="display: none;" onclick="show(0);">Cancel</button>
+</form>
+
+<table id="addGradeTable" style="display: none">
+    <thead>
+    <tr>
+        <th>Name</th>
+        <th>Grade Teacher Name</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="grade : ${grades}">
+        <th><span th:text="${grade.name}"></span></th>
+        <th><span th:text="${grade.gradeTeacherName}"></span></th>
+        <th>
+            <form action="/users_manager/employees" method="post">
+                <input type="hidden" class="employeeIdInput" name="employeeId" value="">
+                <input type="hidden" name="gradeName" th:value="${grade.name}">
+                <input type="hidden" name="action" value="addGrade">
+                <button type="submit">Add Grade</button>
+            </form>
+        </th>
+    </tr>
+    </tbody>
+</table>
+<br>
+<button type="button" style="display: none;" id="cancelButton" onclick="show(0);">Cancel</button>
 
 </body>
 </html>

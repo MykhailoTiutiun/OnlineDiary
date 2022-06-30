@@ -1,30 +1,28 @@
-package com.mykhailotiutiun_projects.onlinediary.data.managers;
+package com.mykhailotiutiun_projects.onlinediary.data.services;
 
 import com.mykhailotiutiun_projects.onlinediary.data.entites.LessonTypeEntity;
 import com.mykhailotiutiun_projects.onlinediary.data.entites.RoleEntity;
 import com.mykhailotiutiun_projects.onlinediary.data.repositories.LessonsTypesRepository;
-import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Stream;
 
 @Service
-public class LessonsTypesManager {
+public class LessonsService {
 
     @Autowired
     private LessonsTypesRepository repository;
     @Autowired
-    private EmployeesManager employeeManager;
+    private EmployeesService employeeManager;
     @Autowired
-    private UsersManager usersManager;
+    private UsersService usersService;
     @Autowired
-    private GradesManager gradesManager;
+    private GradesService gradesService;
     @Autowired
-    private StudentsManager studentsManager;
+    private StudentsService studentsService;
 
 
     public LessonTypeEntity getLessonTypeByName(String name) {
@@ -43,7 +41,7 @@ public class LessonsTypesManager {
 
 
     public void createNewLessonType(String employeeName, String employeePassword, String lessonTypeName) {
-        if (usersManager.verifyUser(employeeName, employeePassword, new RoleEntity(5L, "ROLE_DIRECTOR")) && getLessonTypeByName(lessonTypeName) == null) {
+        if (usersService.verifyUser(employeeName, employeePassword, new RoleEntity(5L, "ROLE_DIRECTOR")) && getLessonTypeByName(lessonTypeName) == null) {
             repository.save(new LessonTypeEntity(lessonTypeName));
         }
     }
@@ -52,7 +50,7 @@ public class LessonsTypesManager {
         if (repository.findById(id) != null) {
             if (repository.findById(id).getGrades() != null) {
                 Set<String> grades = repository.findById(id).getGrades();
-                grades.forEach(grade -> studentsManager.updateLessons(grade));
+                grades.forEach(grade -> studentsService.updateLessons(grade));
             }
             repository.delete(repository.findById(id));
         }
@@ -60,23 +58,24 @@ public class LessonsTypesManager {
 
     @Transactional
     public void addLessonTypeGrade(long lessonId, String gradeName) {
-            LessonTypeEntity lessonTypeEntity = repository.findById(lessonId);
+        LessonTypeEntity lessonTypeEntity = repository.findById(lessonId);
 
-            Set<String> grades = lessonTypeEntity.getGrades();
-            grades.add(gradeName);
-            lessonTypeEntity.setGrades(grades);
+        Set<String> grades = lessonTypeEntity.getGrades();
+        grades.add(gradeName);
+        lessonTypeEntity.setGrades(grades);
 
-            studentsManager.updateLessons(gradeName);
-        }
+        studentsService.updateLessons(gradeName);
+    }
 
+    @Transactional
     public void dropLessonTypeGrade(long id, String gradeName) {
-            LessonTypeEntity lessonTypeEntity = repository.findById(id);
+        LessonTypeEntity lessonTypeEntity = repository.findById(id);
 
-            Set<String> grades = lessonTypeEntity.getGrades();
-            grades.remove(gradeName);
-            lessonTypeEntity.setGrades(grades);
+        Set<String> grades = lessonTypeEntity.getGrades();
+        grades.remove(gradeName);
+        lessonTypeEntity.setGrades(grades);
 
-            studentsManager.updateLessons(gradeName);
+        studentsService.updateLessons(gradeName);
     }
 
 }

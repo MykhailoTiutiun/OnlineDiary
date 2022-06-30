@@ -1,4 +1,4 @@
-package com.mykhailotiutiun_projects.onlinediary.data.managers;
+package com.mykhailotiutiun_projects.onlinediary.data.services;
 
 import com.mykhailotiutiun_projects.onlinediary.data.entites.EmployeeEntity;
 import com.mykhailotiutiun_projects.onlinediary.data.entites.RoleEntity;
@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -29,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 @EnableScheduling
-public class UsersManager implements UserDetailsService {
+public class UsersService implements UserDetailsService {
     @PersistenceContext
     private EntityManager em;
     @Autowired

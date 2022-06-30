@@ -1,28 +1,26 @@
-package com.mykhailotiutiun_projects.onlinediary.data.managers;
+package com.mykhailotiutiun_projects.onlinediary.data.services;
 
 import com.mykhailotiutiun_projects.onlinediary.data.entites.LessonTypeEntity;
 import com.mykhailotiutiun_projects.onlinediary.data.entites.RoleEntity;
 import com.mykhailotiutiun_projects.onlinediary.data.entites.StudentEntity;
 import com.mykhailotiutiun_projects.onlinediary.data.repositories.LessonsTypesRepository;
 import com.mykhailotiutiun_projects.onlinediary.data.repositories.StudentsRepository;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 @Service
-public class StudentsManager {
+public class StudentsService {
 
     @Autowired
     private StudentsRepository repository;
     @Autowired
-    private GradesManager gradesManager;
+    private GradesService gradesService;
     @Autowired
     private LessonsTypesRepository lessonsTypesRepository;
     @Autowired
-    private UsersManager usersManager;
+    private UsersService usersService;
 
     public StudentEntity getStudentByName(String name){
         return repository.findByName(name);
@@ -64,7 +62,7 @@ public class StudentsManager {
     }
 
     public void setGrade(String adminName, String adminPassword, String name, String grade) {
-        if (usersManager.verifyUser(adminName, adminPassword, new RoleEntity(4L, "ROLE_HEAD_TEACHER")) && getStudentByName(name) != null && gradesManager.getGradeByName(grade) != null) {
+        if (usersService.verifyUser(adminName, adminPassword, new RoleEntity(4L, "ROLE_HEAD_TEACHER")) && getStudentByName(name) != null && gradesService.getGradeByName(grade) != null) {
             StudentEntity studentEntity = getStudentByName(name);
             repository.delete(studentEntity);
             studentEntity.setGrade(grade);

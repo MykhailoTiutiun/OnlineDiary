@@ -1,8 +1,7 @@
 package com.mykhailotiutiun_projects.onlinediary.web.configs;
 
-import com.mykhailotiutiun_projects.onlinediary.data.managers.UsersManager;
+import com.mykhailotiutiun_projects.onlinediary.data.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,7 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
-    UsersManager usersManager;
+    UsersService usersService;
 
     @Autowired
     BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -43,6 +42,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     protected void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(usersManager).passwordEncoder(bCryptPasswordEncoder);
+        auth.userDetailsService(usersService).passwordEncoder(bCryptPasswordEncoder);
     }
 }

@@ -1,8 +1,7 @@
-package com.mykhailotiutiun_projects.onlinediary.data.managers;
+package com.mykhailotiutiun_projects.onlinediary.data.services;
 
 
 import com.mykhailotiutiun_projects.onlinediary.data.entites.GradeEntity;
-import com.mykhailotiutiun_projects.onlinediary.data.entites.RoleEntity;
 import com.mykhailotiutiun_projects.onlinediary.data.repositories.GradesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -10,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class GradesManager {
+public class GradesService {
 
     @Autowired
     private GradesRepository repository;
