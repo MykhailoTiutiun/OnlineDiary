@@ -1,5 +1,6 @@
 package com.mykhailotiutiun_projects.onlinediary.web.controllers;
 
+import com.mykhailotiutiun_projects.onlinediary.data.entites.StudentEntity;
 import com.mykhailotiutiun_projects.onlinediary.data.services.EmployeesService;
 import com.mykhailotiutiun_projects.onlinediary.data.services.GradesService;
 import com.mykhailotiutiun_projects.onlinediary.data.services.StudentsService;
@@ -23,6 +24,8 @@ public class UsersController {
     @Autowired
     GradesService gradesService;
 
+    Long studentId = null;
+
     @GetMapping("/users_manager")
     public String mainPage(){
         return "users_manager/main";
@@ -45,12 +48,41 @@ public class UsersController {
         return "redirect:/users_manager/users";
     }
 
+
     @GetMapping("/users_manager/students")
     public String studentsPage(Model model){
         model.addAttribute("students", studentsService.getAllStudents());
+        model.addAttribute("grades", gradesService.getAllGrades());
         return "users_manager/students";
     }
 
+    @PostMapping("/users_manager/students")
+    public String studentsActions(@RequestParam(name = "studentId", required = false) Long studentId, @RequestParam(name = "gradeName", required = false) String gradeName, @RequestParam(name = "action") String action, Model model){
+        switch (action) {
+            case "setGrade" -> studentsService.setGrade(studentId, gradeName);
+            case "marksTables" -> {this.studentId = studentId; return "redirect:/users_manager/marks";}
+        }
+        return "redirect:/users_manager/students";
+    }
+
+    @GetMapping("/users_manager/marks")
+    public String marksPage(Model model){
+        model.addAttribute("marksMap", studentsService.getMapByStudentId(studentId, 0));
+        model.addAttribute("semesterMarksMap", studentsService.getMapByStudentId(studentId, 1));
+        model.addAttribute("yearlyMarksMap", studentsService.getMapByStudentId(studentId, 2));
+
+        return "/users_manager/marks";
+    }
+
+    @PostMapping("/users_manager/marks")
+    public String marksActions(@RequestParam(name = "action") String action, @RequestParam(name = "lesson") String lesson, @RequestParam(name = "mark", required = false) Integer mark, @RequestParam(name = "typeOfMark") Integer typeOfMark){
+        switch (action){
+            case ("addMark") -> studentsService.addMarks(studentId, lesson, mark, typeOfMark);
+            case ("removeMark") -> studentsService.removeMark(studentId, lesson, typeOfMark);
+        }
+
+        return "redirect:/users_manager/marks";
+    }
     @GetMapping("/users_manager/employees")
     public String employeesPage(Model model){
         model.addAttribute("employees", employeesService.getAllEmployees());

@@ -9,7 +9,7 @@
 </head>
 <body>
 <div>
-  <form th:action="@{/registration}" method="post"
+  <form th:action="@{/registration}" method="post" style="display: block"
         th:object="${userForm}">
     <h2>Sing up</h2>
     <div>
@@ -23,10 +23,12 @@
       <input type="password" th:field="*{passwordConfirm}"
                   placeholder="Confirm your password"></input>
     </div>
+    <br>
     <div>
       <input type="checkbox" th:field="*{employee}" id="employee">
       <label for="employee">Employee account</label>
     </div>
+    <br>
     <button type="submit">Log up</button>
   </form>
   <h4>Already have an account <a href="/login">Sing in</a></h4>

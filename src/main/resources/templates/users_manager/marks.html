@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Online Diary | Users Manager | Students</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}"/>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
+    <script>
+
+        function show(a) {
+            if (a === 0) {
+                showByClass("addMarkForm", "none");
+                showByClass("addMarkButton", "block")
+            } else {
+                showByClass("addMarkForm", "block");
+                showByClass("addMarkButton", "none")
+            }
+        }
+
+        function showByClass(className, displayStyle) {
+            var elements = document.getElementsByClassName(className);
+            for (var i = 0; i < elements.length; i++) {
+                elements[i].style.display = displayStyle;
+            }
+        }
+    </script>
+</head>
+<body>
+
+<h2>Marks Manager</h2>
+
+<h3>Marks</h3>
+
+<table>
+    <thead>
+    <tr>
+        <td>Lesson</td>
+        <td>Marks</td>
+        <td>Actions</td>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="lesson : ${marksMap.keySet()}">
+        <td th:text="${lesson}"></td>
+        <td><span th:each="mark : ${marksMap.get(lesson)}">
+        <span th:text="${mark}"></span>
+            &nbsp;&nbsp;
+        </span>
+        </td>
+        <td class="actionsForms">
+            <button class="addMarkButton" type="button" th:attr="onclick=|show(1);|">Add Grade</button>
+            <form style="display: none" class="addMarkForm" action="/users_manager/marks" method="post">
+                <input type="hidden" name="action" value="addMark">
+                <input type="hidden" name="lesson" th:value="${lesson}">
+                <input type="text" name="mark" placeholder="Mark" autofocus="true">
+                <input type="hidden" name="typeOfMark" value="0">
+                <button type="submit">Add Mark</button>
+                <button type="button" onclick="show(0)">Cancel</button>
+            </form>
+
+            <form action="/users_manager/marks" method="post">
+                <input type="hidden" name="action" value="removeMark">
+                <input type="hidden" name="lesson" th:value="${lesson}">
+                <input type="hidden" name="typeOfMark" value="0">
+                <button type="submit">Remove Mark</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Semester Marks</h3>
+<table>
+    <thead>
+    <tr>
+        <td>Lesson</td>
+        <td>Marks</td>
+        <td>Actions</td>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="lesson : ${semesterMarksMap.keySet()}">
+        <td th:text="${lesson}"></td>
+        <td><span th:each="mark : ${semesterMarksMap.get(lesson)}">
+        <span th:text="${mark}">&nbsp;</span>
+        </span></td>
+        <td class="actionsForms">
+            <button class="addMarkButton" type="button" th:attr="onclick=|show(1);|">Add Grade</button>
+            <form style="display: none" class="addMarkForm" action="/users_manager/marks" method="post">
+                <input type="hidden" name="action" value="addMark">
+                <input type="hidden" name="lesson" th:value="${lesson}">
+                <input type="text" name="mark" placeholder="Mark" autofocus="true">
+                <input type="hidden" name="typeOfMark" value="1">
+                <button type="submit">Add Mark</button>
+                <button type="button" onclick="show(0)">Cancel</button>
+            </form>
+
+            <form action="/users_manager/marks" method="post">
+                <input type="hidden" name="action" value="removeMark">
+                <input type="hidden" name="lesson" th:value="${lesson}">
+                <input type="hidden" name="typeOfMark" value="1">
+                <button type="submit">Remove Mark</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Yearly Marks</h3>
+<table>
+    <thead>
+    <tr>
+        <td>Lesson</td>
+        <td>Marks</td>
+        <td>Actions</td>
+    </tr>
+    </thead>
+
+    <tbody>
+    <tr th:each="lesson : ${yearlyMarksMap.keySet()}">
+        <td th:text="${lesson}"></td>
+        <td><span th:each="mark : ${yearlyMarksMap.get(lesson)}">
+        <span th:text="${mark}">&nbsp;</span>
+        </span></td>
+        <td class="actionsForms">
+            <button class="addMarkButton" type="button" th:attr="onclick=|show(1);|">Add Grade</button>
+            <form style="display: none" class="addMarkForm" action="/users_manager/marks" method="post">
+                <input type="hidden" name="action" value="addMark">
+                <input type="hidden" name="lesson" th:value="${lesson}">
+                <input type="text" name="mark" placeholder="Mark" autofocus="true">
+                <input type="hidden" name="typeOfMark" value="2">
+                <button type="submit">Add Mark</button>
+                <button type="button" onclick="show(0)">Cancel</button>
+            </form>
+
+            <form action="/users_manager/marks" method="post">
+                <input type="hidden" name="action" value="removeMark">
+                <input type="hidden" name="lesson" th:value="${lesson}">
+                <input type="hidden" name="typeOfMark" value="2">
+                <button type="submit">Remove Mark</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
