@@ -5,6 +5,7 @@ table {
 }
 body{
     font-family: "Roboto", sans-serif;
+    font-size: medium;
 }
 
 table, th, td {
@@ -29,4 +30,62 @@ form {
 button {
     padding: 4px 8px;
     cursor: pointer;
+}
+
+.nav-bar {
+    background-color: limegreen;
+    top:0;
+    position: fixed;
+    right: 0;
+    left: 0;
+    min-height: 50px;
+    border: 1px solid limegreen;
+}
+
+li, ul{
+    float: left;
+}
+
+.link {
+    padding: 10px 15px;
+    cursor: pointer;
+    text-decoration-color: grey;
+    text-decoration-line: none;
+    color: black;
+}
+
+
+.name-span{
+    font-size: x-large;
+    padding: 10px 10px;
+    line-height: 50px;
+}
+
+ul{
+    list-style: none;
+}
+
+.auth-list{
+    float: right;
+}
+
+.container{
+    display: block;
+    float: none;
+    padding-right: 15px;
+    padding-left: 15px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.auth-div {
+    float: right;
+}
+
+.navbar-header{
+    float: left;
+}
+
+.nav-buttons-div{
+    float: left;
 }

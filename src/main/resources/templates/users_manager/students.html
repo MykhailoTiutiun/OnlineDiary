@@ -29,6 +29,13 @@
     </script>
 </head>
 <body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<br>
+<br>
+<br>
+
 <h2>Students</h2>
 
 <table>
@@ -41,6 +48,7 @@
     </thead>
 
     <tbody>
+
     <tr th:each="student : ${students}">
         <td><span th:text="${student.name}"></span></td>
         <td><span th:text="${student.grade}"></span></td>

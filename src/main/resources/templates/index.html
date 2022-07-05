@@ -10,29 +10,8 @@
 </head>
 <body>
 
-<h2>Online Diary</h2>
+<div th:replace="~{fragments/header :: header}"></div>
 
-<h2 sec:authorize="isAuthenticated()" sec:authentication="name"></h2>
-<div sec:authorize="isAnonymous()">
-    <h3><a href="/login">Sing in</a></h3>
-    <h3><a href="/registration">Sing up</a></h3>
-</div>
-
-<div sec:authorize="hasRole('ROLE_EMPLOYEE')">
-    <h3><a href="/users_manager">Users Manager</a></h3>
-</div>
-
-<div sec:authorize="hasRole('ROLE_HEAD_TEACHER')">
-    <h3><a href="/grades_manager">Grades Manager</a></h3>
-</div>
-
-<div sec:authorize="hasRole('ROLE_HEAD_TEACHER')">
-    <h3><a href="/lessons_manager">Lessons Manager</a></h3>
-</div>
-
-<div sec:authorize="isAuthenticated()">
-    <h3><a href="/logout">Log out</a></h3>
-</div>
 
 </body>
 </html>

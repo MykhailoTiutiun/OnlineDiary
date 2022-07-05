@@ -67,6 +67,7 @@ public class UsersController {
 
     @GetMapping("/users_manager/marks")
     public String marksPage(Model model){
+        model.addAttribute("studentName", studentsService.getStudentById(studentId).getName());
         model.addAttribute("marksMap", studentsService.getMapByStudentId(studentId, 0));
         model.addAttribute("semesterMarksMap", studentsService.getMapByStudentId(studentId, 1));
         model.addAttribute("yearlyMarksMap", studentsService.getMapByStudentId(studentId, 2));
