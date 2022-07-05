@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+
+</head>
+<body>
+<nav class="nav-bar" th:fragment="header">
+    <div class="container">
+        <div class="navbar-header">
+            <span class="name-span">Online Diary</span>
+        </div>
+        <div class="nav-buttons-div">
+            <ul>
+                <li>
+                    <a class="link" th:href="@{/}">Home</a>
+                </li>
+                <li>
+                    <a class="link" sec:authorize="hasRole('ROLE_EMPLOYEE')" th:href="@{/users_manager}">Users Manager</a>
+                </li>
+                <li>
+                    <a class="link" sec:authorize="hasRole('ROLE_HEAD_TEACHER')" th:href="@{/grades_manager}">Grades Manager</a>
+                </li>
+                <li>
+                    <a class="link" sec:authorize="hasRole('ROLE_HEAD_TEACHER')" th:href="@{/lessons_manager}">Lessons Manager</a>
+                </li>
+            </ul>
+        </div>
+        <div class="auth-div">
+            <ul class="auth-list">
+                <li>
+                    <span sec:authorize="isAuthenticated()" sec:authentication="name"></span>
+                </li>
+                <li>
+                    <a class="link" sec:authorize="isAuthenticated()" th:href="@{/logout}">Log out</a>
+                </li>
+                <li>
+                    <a class="link" sec:authorize="isAnonymous()" th:href="@{/login}">Sing in</a>
+                </li>
+                <li>
+                    <a class="link" sec:authorize="isAnonymous()" th:href="@{/registration}">Sing up</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+</body>
+</html>
