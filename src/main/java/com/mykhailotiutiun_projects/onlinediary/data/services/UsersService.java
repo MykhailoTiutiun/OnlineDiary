@@ -29,6 +29,7 @@ import java.util.concurrent.TimeUnit;
 @Service
 @EnableScheduling
 public class UsersService implements UserDetailsService {
+    public static final String TEMPORAL_DIRECROR_PASSWORD = "12345";
     @PersistenceContext
     private EntityManager em;
     @Autowired
@@ -91,14 +92,12 @@ public class UsersService implements UserDetailsService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         if(!user.isEmployee()) {
-            user.addRole(roleRepository.findByName("ROLE_STUDENT"));
             studentsRepository.save(new StudentEntity(user.getName()));
         } else {
-            user.addRole(roleRepository.findByName("ROLE_EMPLOYEE"));
             employeesRepository.save(new EmployeeEntity(user.getName()));
 
-            if (bCryptPasswordEncoder.matches("12345", user.getPassword())) {
-                user.addRole(roleRepository.findByName("ROLE_VERIFIED"));
+            if (bCryptPasswordEncoder.matches(TEMPORAL_DIRECROR_PASSWORD, user.getPassword())) {
+                user.addRole(roleRepository.findByName("ROLE_EMPLOYEE"));
                 user.addRole(roleRepository.findByName("ROLE_HEAD_TEACHER"));
                 user.addRole(roleRepository.findByName("ROLE_DIRECTOR"));
                 user.setVerify(true);
@@ -126,9 +125,7 @@ public class UsersService implements UserDetailsService {
     public boolean deleteUser(Long userId) {
         if (userRepository.findById(userId).isPresent()) {
             String name = userRepository.findById(userId).get().getName();
-            Set<RoleEntity> roles = userRepository.findByName(name).getRoles();
-            RoleEntity studentRole = roleRepository.findByName("ROLE_STUDENT");
-            if(roles.contains(studentRole)){
+            if(!userRepository.findById(userId).get().isEmployee()){
                 studentsRepository.delete(studentsRepository.findByName(name));
             } else {
                 employeesRepository.delete(employeesRepository.findByName(name));
@@ -145,7 +142,11 @@ public class UsersService implements UserDetailsService {
             UserEntity user = getUserById(userId);
             userRepository.delete(user);
             user.setVerify(true);
-            user.addRole(roleRepository.findByName("ROLE_VERIFIED"));
+            if(user.isEmployee()){
+                user.addRole(roleRepository.findByName("ROLE_EMPLOYEE"));
+            } else {
+                user.addRole(roleRepository.findByName("ROLE_STUDENT"));
+            }
             userRepository.save(user);
             return true;
         }
@@ -158,8 +159,14 @@ public class UsersService implements UserDetailsService {
 //    }
 
     @Scheduled(fixedRate = 1, timeUnit = TimeUnit.DAYS)
-    private void autoDeleteNonVerifyEmployees(){
+    private void autoDeleteNonVerifyUsers(){
         List<UserEntity> userEntities = getAllUsers().stream().filter(userEntity -> !userEntity.isVerify() && userEntity.getInitDate().plusDays(30).isBefore(LocalDate.now())).toList();
-        userRepository.deleteAll(userEntities);
+        userEntities.forEach(user -> deleteUser(user.getId()));
+    }
+
+    @Scheduled(fixedRate = 12, timeUnit = TimeUnit.HOURS)
+    private void autoDeleteTemporalUsers(){
+        List<UserEntity> userEntities = getAllUsers().stream().filter(userEntity -> bCryptPasswordEncoder.matches(TEMPORAL_DIRECROR_PASSWORD, userEntity.getPassword()) && userEntity.getInitDate().plusDays(1).isBefore(LocalDate.now())).toList();
+        userEntities.forEach(user -> deleteUser(user.getId()));
     }
 }

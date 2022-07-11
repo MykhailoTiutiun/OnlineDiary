@@ -54,7 +54,7 @@
         <td><span th:text="${student.grade}"></span></td>
         <td class="actionsForms">
             <button type="button" th:attr="onclick=|sendStudentId(${student.id}); show(4);|">Set Grade</button>
-            <form action="/users_manager/students" method="post">
+            <form th:action="@{/users_manager/students}" method="post">
                 <input type="hidden" name="studentId" th:value="${student.id}">
                 <input type="hidden" name="action" value="marksTables">
                 <button type="submit">Set Marks</button>
@@ -78,7 +78,7 @@
         <th><span th:text="${grade.name}"></span></th>
         <th><span th:text="${grade.gradeTeacherName}"></span></th>
         <th>
-            <form action="/users_manager/students" method="post">
+            <form th:action="@{/users_manager/students}" method="post">
                 <input type="hidden" class="studentIdInput" name="studentId" value="">
                 <input type="hidden" name="gradeName" th:value="${grade.name}">
                 <input type="hidden" name="action" value="setGrade">

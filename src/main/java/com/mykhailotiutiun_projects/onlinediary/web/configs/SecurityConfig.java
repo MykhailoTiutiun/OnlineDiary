@@ -25,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .disable()
                 .authorizeRequests()
                 .antMatchers("/registration").not().fullyAuthenticated()
-                .antMatchers("/users_manager/main", "/users_manager/students").hasRole("EMPLOYEE")
+                .antMatchers("/users_manager", "/users_manager/students", "/users_manager/marks").hasRole("EMPLOYEE")
                 .antMatchers("/grades_manager/**", "/lessons_manager/**", "/users_manager/**").hasRole("HEAD_TEACHER")
                 .antMatchers("/", "/images/logo.png", "/css/style.css").permitAll()
                 .anyRequest().authenticated()

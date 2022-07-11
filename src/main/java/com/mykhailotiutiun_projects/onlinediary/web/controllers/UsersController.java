@@ -43,6 +43,8 @@ public class UsersController {
             case "delete" -> usersService.deleteUser(userId);
             case "verify" -> usersService.checkUser(userId);
             case "addHeadTeacherRole" -> usersService.addRoleToUser(userId, "ROLE_HEAD_TEACHER");
+            case "addDirectorRole" -> usersService.addRoleToUser(userId, "ROLE_DIRECTOR");
+            case "removeDirectorRole" -> usersService.removeRoleToUser(userId, "ROLE_DIRECTOR");
             case "removeHeadTeacherRole" -> usersService.removeRoleToUser(userId, "ROLE_HEAD_TEACHER");
         }
         return "redirect:/users_manager/users";

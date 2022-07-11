@@ -68,7 +68,7 @@
         <td>
             <button type="button" th:attr="onclick=|setGradeId(${grade.id}); show(2);|">Set Main Teacher</button>
 
-            <form action="/grades_manager" method="post">
+            <form th:action="@{/grades_manager}" method="post">
                 <input type="hidden" name="gradeId" th:value="${grade.id}">
                 <input type="hidden" name="action" value="delete">
                 <button type="submit">Delete</button>
@@ -105,7 +105,7 @@
         <th><span th:text="${employee.name}"></span></th>
         <th><span th:text="${employee.specialization}"></span></th>
         <th>
-            <form action="/grades_manager" method="post">
+            <form th:action="@{/grades_manager}" method="post">
                 <input type="hidden" class="gradeIdInput" name="gradeId" value="">
                 <input type="hidden" name="employeeName" th:value="${employee.name}">
                 <input type="hidden" name="action" value="setMainTeacher">

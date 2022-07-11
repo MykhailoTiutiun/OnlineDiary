@@ -61,7 +61,7 @@
         </td>
         <td class="actionsForms">
             <button class="addMarkButton" type="button" th:attr="onclick=|show(1);|">Add Grade</button>
-            <form style="display: none" class="addMarkForm" action="/users_manager/marks" method="post">
+            <form style="display: none" class="addMarkForm" th:action="@{/users_manager/marks}" method="post">
                 <input type="hidden" name="action" value="addMark">
                 <input type="hidden" name="lesson" th:value="${lesson}">
                 <input type="text" name="mark" placeholder="Mark" autofocus="true">
@@ -70,7 +70,7 @@
                 <button type="button" onclick="show(0)">Cancel</button>
             </form>
 
-            <form action="/users_manager/marks" method="post">
+            <form th:action="@{/users_manager/marks}" method="post">
                 <input type="hidden" name="action" value="removeMark">
                 <input type="hidden" name="lesson" th:value="${lesson}">
                 <input type="hidden" name="typeOfMark" value="0">
@@ -99,7 +99,7 @@
         </span></td>
         <td class="actionsForms">
             <button class="addMarkButton" type="button" th:attr="onclick=|show(1);|">Add Grade</button>
-            <form style="display: none" class="addMarkForm" action="/users_manager/marks" method="post">
+            <form style="display: none" class="addMarkForm" th:action="@{/users_manager/marks}" method="post">
                 <input type="hidden" name="action" value="addMark">
                 <input type="hidden" name="lesson" th:value="${lesson}">
                 <input type="text" name="mark" placeholder="Mark" autofocus="true">
@@ -108,7 +108,7 @@
                 <button type="button" onclick="show(0)">Cancel</button>
             </form>
 
-            <form action="/users_manager/marks" method="post">
+            <form th:action="@{/users_manager/marks}" method="post">
                 <input type="hidden" name="action" value="removeMark">
                 <input type="hidden" name="lesson" th:value="${lesson}">
                 <input type="hidden" name="typeOfMark" value="1">
@@ -137,7 +137,7 @@
         </span></td>
         <td class="actionsForms">
             <button class="addMarkButton" type="button" th:attr="onclick=|show(1);|">Add Grade</button>
-            <form style="display: none" class="addMarkForm" action="/users_manager/marks" method="post">
+            <form style="display: none" class="addMarkForm" th:action="@{/users_manager/marks}" method="post">
                 <input type="hidden" name="action" value="addMark">
                 <input type="hidden" name="lesson" th:value="${lesson}">
                 <input type="text" name="mark" placeholder="Mark" autofocus="true">
@@ -146,7 +146,7 @@
                 <button type="button" onclick="show(0)">Cancel</button>
             </form>
 
-            <form action="/users_manager/marks" method="post">
+            <form th:action="@{/users_manager/marks}" method="post">
                 <input type="hidden" name="action" value="removeMark">
                 <input type="hidden" name="lesson" th:value="${lesson}">
                 <input type="hidden" name="typeOfMark" value="2">

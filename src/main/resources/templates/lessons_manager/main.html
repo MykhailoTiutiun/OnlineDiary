@@ -67,7 +67,7 @@
             <span class="removeGradeButtons" th:each="grade : ${lesson.grades}">
                 <span th:text="${grade}"></span>
                 <span>&nbsp;</span>
-                <form action="/lessons_manager" method="post">
+                <form th:action="@{/lessons_manager}" method="post">
                     <input type="hidden" name="lessonId" th:value="${lesson.id}">
                     <input type="hidden" name="gradeName" th:value="${grade}">
                     <input type="hidden" name="action" value="removeGrade">
@@ -80,7 +80,7 @@
 
             <button type="button" th:attr="onclick=|setLessonId(${lesson.id}); show(2);|">Add Grade</button>
 
-            <form action="/lessons_manager" method="post">
+            <form th:action="@{/lessons_manager}" method="post">
                 <input type="hidden" name="lessonId" th:value="${lesson.id}">
                 <input type="hidden" name="action" value="delete">
                 <button type="submit">Delete</button>
@@ -117,7 +117,7 @@
         <th><span th:text="${grade.name}"></span></th>
         <th><span th:text="${grade.gradeTeacherName}"></span></th>
         <th>
-            <form action="/lessons_manager" method="post">
+            <form th:action="@{/lessons_manager}" method="post">
                 <input type="hidden" class="lessonIdInput" name="lessonId" value="">
                 <input type="hidden" name="gradeName" th:value="${grade.name}">
                 <input type="hidden" name="action" value="addGrade">

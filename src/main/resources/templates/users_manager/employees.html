@@ -70,7 +70,7 @@
         <td><span class="removeGradeButtons" th:each="grade : ${employee.grades}">
             <span th:text="${grade}"></span>
             <span>&nbsp;</span>
-            <form action="/users_manager/employees" method="post">
+            <form th:action="@{/users_manager/employees}" method="post">
                 <input type="hidden" name="employeeId" th:value="${employee.id}">
                 <input type="hidden" name="gradeName" th:value="${grade}">
                 <input type="hidden" name="action" value="removeGrade">
@@ -88,7 +88,7 @@
 
 <br>
 
-<form id="specializationForm" action="/users_manager/employees" method="post" style="display: none">
+<form id="specializationForm" th:action="@{/users_manager/employees}" method="post" style="display: none">
     <h3>Set Specialization</h3>
     <input type="hidden" id="employeeIdSpecializationForm" placeholder="Specialization" autofocus="true" name="employeeId" value="">
     <input type="text" name="specialization">
@@ -111,7 +111,7 @@
         <th><span th:text="${grade.name}"></span></th>
         <th><span th:text="${grade.gradeTeacherName}"></span></th>
         <th>
-            <form action="/users_manager/employees" method="post">
+            <form th:action="@{/users_manager/employees}" method="post">
                 <input type="hidden" class="employeeIdInput" name="employeeId" value="">
                 <input type="hidden" name="gradeName" th:value="${grade.name}">
                 <input type="hidden" name="action" value="addGrade">

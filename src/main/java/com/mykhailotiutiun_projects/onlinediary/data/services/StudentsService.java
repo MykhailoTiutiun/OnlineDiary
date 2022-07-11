@@ -49,12 +49,16 @@ public class StudentsService {
     }
 
     private Map<String, List<Integer>> updateMarks(Map<String, List<Integer>> marks, Set<String> lessons){
+        Map<String, List<Integer>> marksMap = new HashMap<>();
+
         lessons.forEach(lesson -> {
-            if(!marks.containsKey(lesson)){
-                marks.put(lesson, new ArrayList<>());
+            if(marks.containsKey(lesson)){
+                marksMap.put(lesson, marks.get(lesson));
+            } else {
+                marksMap.put(lesson, new ArrayList<>());
             }
         });
-        return marks;
+        return marksMap;
     }
     public void addNewStudent(String name) {
         if (getStudentByName(name) == null) {
@@ -85,6 +89,9 @@ public class StudentsService {
 
         List<StudentEntity> studentEntities = getAllByGrade(grade);
 
+        if (studentEntities.isEmpty()){
+            return;
+        }
         studentEntities.forEach(entity -> {
             entity.setLessons(lessons);
 

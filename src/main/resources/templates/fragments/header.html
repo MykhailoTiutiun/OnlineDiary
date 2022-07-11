@@ -32,7 +32,7 @@
         <div class="auth-div">
             <ul class="auth-list">
                 <li>
-                    <span sec:authorize="isAuthenticated()" sec:authentication="name"></span>
+                    <span class="user-span" sec:authorize="isAuthenticated()" sec:authentication="name" ></span>
                 </li>
                 <li>
                     <a class="link" sec:authorize="isAuthenticated()" th:href="@{/logout}">Log out</a>

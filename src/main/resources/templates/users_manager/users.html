@@ -39,26 +39,41 @@
         <td><span th:text="${user.initDate}"></span></td>
         <td><span th:each="role : ${user.roles}"><span th:text="${role.name}"></span>, &nbsp;&nbsp;</span></td>
         <td class="actionsForms">
-            <form th:if="${!user.verify}" action="/users_manager/users" method="post">
+            <form th:if="${!user.verify}" th:action="@{/users_manager/users}" method="post">
                 <input type="hidden" name="userId" th:value="${user.id}">
                 <input type="hidden" name="action" value="verify">
                 <button type="submit">Verify</button>
             </form>
 
             <form th:if="${!user.hasRoleByIdAndName(4, 'ROLE_HEAD_TEACHER') && user.employee}"
-                  action="/users_manager/users" method="post">
+                  th:action="@{/users_manager/users}" method="post">
                 <input type="hidden" name="userId" th:value="${user.id}">
                 <input type="hidden" name="action" value="addHeadTeacherRole">
                 <button type="submit">Add Head Teacher Role</button>
             </form>
 
-            <form th:if="${user.hasRoleByIdAndName(4, 'ROLE_HEAD_TEACHER')}" action="/users_manager/users" method="post">
+            <form sec:authorize="hasRole('DIRECTOR')" th:if="${user.hasRoleByIdAndName(4, 'ROLE_HEAD_TEACHER') && !user.hasRoleByIdAndName(5, 'ROLE_DIRECTOR') && user.employee}"
+                  th:action="@{/users_manager/users}" method="post">
+                <input type="hidden" name="userId" th:value="${user.id}">
+                <input type="hidden" name="action" value="addDirectorRole">
+                <button type="submit">Add Director Role</button>
+            </form>
+
+            <form sec:authorize="hasRole('DIRECTOR')" th:if="${user.hasRoleByIdAndName(5, 'ROLE_DIRECTOR') && user.employee}"
+                  th:action="@{/users_manager/users}" method="post">
+                <input type="hidden" name="userId" th:value="${user.id}">
+                <input type="hidden" name="action" value="removeDirectorRole">
+                <button type="submit">Remove Director Role</button>
+            </form>
+
+            <form th:if="${user.hasRoleByIdAndName(4, 'ROLE_HEAD_TEACHER') && !user.hasRoleByIdAndName(5, 'ROLE_DIRECTOR')}"
+                  th:action="@{/users_manager/users}" method="post">
                 <input type="hidden" name="userId" th:value="${user.id}">
                 <input type="hidden" name="action" value="removeHeadTeacherRole">
                 <button type="submit">Remove Head Teacher Role</button>
             </form>
 
-            <form sec:authorize="hasRole('DIRECTOR')" action="/users_manager/users" method="post">
+            <form sec:authorize="hasRole('DIRECTOR')" th:action="@{/users_manager/users}" method="post">
                 <input type="hidden" name="userId" th:value="${user.id}">
                 <input type="hidden" name="action" value="delete">
                 <button type="submit">Delete</button>

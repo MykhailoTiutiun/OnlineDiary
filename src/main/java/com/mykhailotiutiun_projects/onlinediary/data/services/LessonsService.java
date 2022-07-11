@@ -46,13 +46,16 @@ public class LessonsService {
         }
     }
 
+    @Transactional
     public void deleteLessonType(long id) {
         if (repository.findById(id) != null) {
             if (repository.findById(id).getGrades() != null) {
                 Set<String> grades = repository.findById(id).getGrades();
+                repository.delete(repository.findById(id));
                 grades.forEach(grade -> studentsService.updateLessons(grade));
+            } else {
+                repository.delete(repository.findById(id));
             }
-            repository.delete(repository.findById(id));
         }
     }
 

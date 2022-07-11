@@ -89,3 +89,7 @@ ul{
 .nav-buttons-div{
     float: left;
 }
+
+.user-span {
+    padding: 10px 15px;
+}

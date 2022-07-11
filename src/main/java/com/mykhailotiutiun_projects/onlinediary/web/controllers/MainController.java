@@ -13,4 +13,5 @@ public class MainController implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("login");
         registry.addViewController("/").setViewName("index");
     }
+
 }
