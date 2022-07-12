@@ -2,13 +2,13 @@ package com.mykhailotiutiun_projects.onlinediary.services;
 
 import com.mykhailotiutiun_projects.onlinediary.data.entites.EmployeeEntity;
 import com.mykhailotiutiun_projects.onlinediary.data.entites.RoleEntity;
-import com.mykhailotiutiun_projects.onlinediary.data.entites.StudentEntity;
 import com.mykhailotiutiun_projects.onlinediary.data.entites.UserEntity;
 import com.mykhailotiutiun_projects.onlinediary.data.repositories.EmployeesRepository;
 import com.mykhailotiutiun_projects.onlinediary.data.repositories.RolesRepository;
 import com.mykhailotiutiun_projects.onlinediary.data.repositories.StudentsRepository;
 import com.mykhailotiutiun_projects.onlinediary.data.repositories.UsersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -23,13 +23,14 @@ import javax.persistence.PersistenceContext;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Service
 @EnableScheduling
 public class UsersService implements UserDetailsService {
-    public static final String TEMPORAL_DIRECROR_PASSWORD = "12345";
+
+    @Value(value = "${user.temporal_director_password}")
+    public String temporalDirectorPassword;
     @PersistenceContext
     private EntityManager em;
     @Autowired
@@ -98,7 +99,7 @@ public class UsersService implements UserDetailsService {
         } else {
             employeesRepository.save(new EmployeeEntity(user.getName()));
 
-            if (bCryptPasswordEncoder.matches(TEMPORAL_DIRECROR_PASSWORD, user.getPassword())) {
+            if (bCryptPasswordEncoder.matches(temporalDirectorPassword, user.getPassword())) {
                 user.addRole(roleRepository.findByName("ROLE_EMPLOYEE"));
                 user.addRole(roleRepository.findByName("ROLE_HEAD_TEACHER"));
                 user.addRole(roleRepository.findByName("ROLE_DIRECTOR"));
@@ -168,7 +169,7 @@ public class UsersService implements UserDetailsService {
 
     @Scheduled(fixedRate = 12, timeUnit = TimeUnit.HOURS)
     private void autoDeleteTemporalUsers(){
-        List<UserEntity> userEntities = getAllUsers().stream().filter(userEntity -> bCryptPasswordEncoder.matches(TEMPORAL_DIRECROR_PASSWORD, userEntity.getPassword()) && userEntity.getInitDate().plusDays(1).isBefore(LocalDate.now())).toList();
+        List<UserEntity> userEntities = getAllUsers().stream().filter(userEntity -> bCryptPasswordEncoder.matches(temporalDirectorPassword, userEntity.getPassword()) && userEntity.getInitDate().plusDays(1).isBefore(LocalDate.now())).toList();
         userEntities.forEach(user -> deleteUser(user.getId()));
     }
 }
