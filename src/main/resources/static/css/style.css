@@ -93,3 +93,20 @@ ul{
 .user-span {
     padding: 10px 15px;
 }
+
+
+.username-div, .user-containers, .specialization-div, .employee-grades-div, .employee-grades-span, .marks-list-part, .marks-list, .verified-div {
+    padding: 10px 10px;
+}
+
+.username-div{
+    font-size: x-large;
+}
+
+.user-containers{
+    font-size: larger;
+}
+
+.employee-grades-span{
+    padding-left: 0px;
+}

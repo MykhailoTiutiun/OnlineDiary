@@ -1,7 +1,6 @@
-package com.mykhailotiutiun_projects.onlinediary.data.services;
+package com.mykhailotiutiun_projects.onlinediary.services;
 
 import com.mykhailotiutiun_projects.onlinediary.data.entites.LessonTypeEntity;
-import com.mykhailotiutiun_projects.onlinediary.data.entites.RoleEntity;
 import com.mykhailotiutiun_projects.onlinediary.data.entites.StudentEntity;
 import com.mykhailotiutiun_projects.onlinediary.data.repositories.LessonsTypesRepository;
 import com.mykhailotiutiun_projects.onlinediary.data.repositories.StudentsRepository;

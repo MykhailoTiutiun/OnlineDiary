@@ -10,6 +10,13 @@
 
 </head>
 <body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<br>
+<br>
+<br>
+
 <div>
   <form th:action="@{/registration}" method="post" style="display: block"
         th:object="${userForm}">
@@ -33,8 +40,6 @@
     <br>
     <button type="submit">Log up</button>
   </form>
-  <h4>Already have an account <a th:href="@{/login}">Sing in</a></h4>
-  <a href="/static">Main page</a>
 </div>
 </body>
 </html>

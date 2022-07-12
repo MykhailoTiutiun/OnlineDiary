@@ -1,6 +1,6 @@
 package com.mykhailotiutiun_projects.onlinediary.web.configs;
 
-import com.mykhailotiutiun_projects.onlinediary.data.services.UsersService;
+import com.mykhailotiutiun_projects.onlinediary.services.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

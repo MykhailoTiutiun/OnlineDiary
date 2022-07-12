@@ -1,8 +1,8 @@
 package com.mykhailotiutiun_projects.onlinediary.web.controllers;
 
 import com.mykhailotiutiun_projects.onlinediary.data.entites.LessonTypeEntity;
-import com.mykhailotiutiun_projects.onlinediary.data.services.GradesService;
-import com.mykhailotiutiun_projects.onlinediary.data.services.LessonsService;
+import com.mykhailotiutiun_projects.onlinediary.services.GradesService;
+import com.mykhailotiutiun_projects.onlinediary.services.LessonsService;
 import com.mykhailotiutiun_projects.onlinediary.data.repositories.LessonsTypesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;

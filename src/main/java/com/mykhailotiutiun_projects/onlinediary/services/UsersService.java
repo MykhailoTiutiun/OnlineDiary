@@ -1,4 +1,4 @@
-package com.mykhailotiutiun_projects.onlinediary.data.services;
+package com.mykhailotiutiun_projects.onlinediary.services;
 
 import com.mykhailotiutiun_projects.onlinediary.data.entites.EmployeeEntity;
 import com.mykhailotiutiun_projects.onlinediary.data.entites.RoleEntity;

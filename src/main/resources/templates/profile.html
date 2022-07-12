@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Online Diary</title>
+    <link rel="icon" type="image/png" th:href="@{/images/logo.png}"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}"></div>
+
+<br>
+<br>
+<br>
+
+<div class="username-div">
+    <span th:text="${user.name}"></span>
+</div>
+
+<div class="verified-div" th:if="${!user.isVerify()}">
+    <span>Your account is not verified!</span>
+</div>
+
+<div class="user-containers">
+    <div th:if="${user.isEmployee()}">
+        <div class="specialization-div">
+            <span>Specialization:</span>
+            <span th:text="${employee.specialization}"></span>
+        </div>
+        <div class="employee-grades-div">
+            <span>
+                <span>Grades:</span>
+                <span class="employee-grades-span" th:each="grade : ${employee.grades}" th:text="${grade}"></span>
+            </span>
+        </div>
+    </div>
+    <div th:if="${!user.isEmployee()}">
+        <div>
+            <span>Grade:</span>
+            <span th:text="${student.grade}"></span>
+        </div>
+        <div>
+            <ul class="marks-list">
+                <li class="marks-list-part">
+                <span>Marks</span>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Lesson</td>
+                        <td>Marks</td>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="lesson : ${marksMap.keySet()}">
+                        <td th:text="${lesson}"></td>
+                        <td>
+                            <span th:each="mark : ${marksMap.get(lesson)}">
+                                <span th:text="${mark}"></span>
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </li>
+
+                <li class="marks-list-part">
+                <span>Semester Marks</span>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Lesson</td>
+                        <td>Marks</td>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="lesson : ${semesterMarksMap.keySet()}">
+                        <td th:text="${lesson}"></td>
+                        <td>
+                            <span th:each="mark : ${semesterMarksMap.get(lesson)}">
+                                <span th:text="${mark}"></span>
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </li>
+
+                <li class="marks-list-part">
+                <span>Yearly Marks</span>
+                <table>
+                    <thead>
+                    <tr>
+                        <td>Lesson</td>
+                        <td>Marks</td>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr th:each="lesson : ${yearlyMarksMap.keySet()}">
+                        <td th:text="${lesson}"></td>
+                        <td>
+                            <span th:each="mark : ${yearlyMarksMap.get(lesson)}">
+                                <span th:text="${mark}"></span>
+                            </span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
