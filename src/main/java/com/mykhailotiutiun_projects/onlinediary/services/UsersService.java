@@ -40,6 +40,8 @@ public class UsersService implements UserDetailsService {
     StudentsRepository studentsRepository;
     @Autowired
     EmployeesRepository employeesRepository;
+    @Autowired
+    StudentsService studentsService;
 
     BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 
@@ -92,7 +94,7 @@ public class UsersService implements UserDetailsService {
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
 
         if(!user.isEmployee()) {
-            studentsRepository.save(new StudentEntity(user.getName()));
+            studentsService.addNewStudent(user.getName());
         } else {
             employeesRepository.save(new EmployeeEntity(user.getName()));
 

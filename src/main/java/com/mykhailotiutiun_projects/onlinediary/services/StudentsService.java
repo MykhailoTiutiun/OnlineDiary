@@ -19,8 +19,6 @@ public class StudentsService {
     private GradesService gradesService;
     @Autowired
     private LessonsTypesRepository lessonsTypesRepository;
-    @Autowired
-    private UsersService usersService;
 
     public StudentEntity getStudentById(long id){return repository.findById(id);}
     public StudentEntity getStudentByName(String name){
@@ -60,10 +58,8 @@ public class StudentsService {
         return marksMap;
     }
     public void addNewStudent(String name) {
-        if (getStudentByName(name) == null) {
             repository.save(new StudentEntity(name));
             updateLessons(repository.findByName(name).getGrade());
-        }
     }
 
     @Transactional

@@ -15,26 +15,27 @@ public class RegistrationController {
     @Autowired
     UsersService usersService;
 
+    String error = null;
+
     @GetMapping("/registration")
     public String registration(Model model){
         model.addAttribute("userForm", new UserEntity());
+        model.addAttribute("error", error);
         return "registration";
     }
 
     @PostMapping("/registration")
     public String addUser(@ModelAttribute UserEntity userEntity, BindingResult result, Model model){
 
-        if (!userEntity.getPassword().equals(userEntity.getPasswordConfirm())){
-            model.addAttribute("passwordError", "Пароли не совпадают");
-            return "registration";
+        if (usersService.getUserByName(userEntity.getName()) != null) {
+            error = "User with this name already exists!";
+        } else if (!userEntity.getPassword().equals(userEntity.getPasswordConfirm())){
+            error = "Passwords are different!";
+        } else if (!result.hasErrors()){
+            usersService.addUser(userEntity);
+            return "redirect:/";
         }
-        if(result.hasErrors()){
-            return "registration";
-        }
-
-        usersService.addUser(userEntity);
-
-        return "redirect:/";
+        return "redirect:/registration";
     }
 
 }

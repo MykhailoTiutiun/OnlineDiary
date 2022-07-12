@@ -110,3 +110,7 @@ ul{
 .employee-grades-span{
     padding-left: 0px;
 }
+
+.reg-error-span {
+    background-color: coral;
+}

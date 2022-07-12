@@ -38,6 +38,10 @@
       <label for="employee">Employee account</label>
     </div>
     <br>
+    <div th:if="${error!=null}">
+      <span class="reg-error-span" th:text="${error}"></span>
+    </div>
+    <br>
     <button type="submit">Log up</button>
   </form>
 </div>
